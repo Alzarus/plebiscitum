@@ -55,7 +55,7 @@ const Login = () => {
     if (window.Pi) {
       window.Pi.init({
         version: "2.0", // Versão atual do SDK
-        sandbox: false, // Use true para ambiente de teste
+        sandbox: true, // Use true para ambiente de teste
       });
     } else {
       console.error("Pi SDK não foi carregado corretamente.");
@@ -65,6 +65,7 @@ const Login = () => {
   const handleLogin = () => {
     if (window.Pi) {
       window.Pi.authenticate(
+        ["username"], // Certifique-se de que isso é um array de strings de permissões
         {
           onReadyForServerApproval: function (uuid) {
             console.log("UUID para aprovação no servidor:", uuid);
@@ -82,8 +83,7 @@ const Login = () => {
           onError: function (error) {
             console.error("Erro durante a autenticação:", error);
           },
-        },
-        ["username"] // Certifique-se de que isso é um array de strings
+        }
       );
     } else {
       console.error("Pi SDK não foi carregado corretamente.");
