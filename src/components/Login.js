@@ -50,16 +50,28 @@ const FooterText = styled.p`
 const Login = () => {
   const navigate = useNavigate();
 
-  // Inicializar o Pi SDK ao carregar o componente
   useEffect(() => {
+    // Inicializar o Pi SDK ao carregar o componente
     if (window.Pi) {
       window.Pi.init({
         version: "2.0", // Versão atual do SDK
-        sandbox: true, // Use true para ambiente de teste
+        sandbox: true, // Utilize true para ambiente de teste
       });
     } else {
       console.error("Pi SDK não foi carregado corretamente.");
     }
+
+    // Adicionar listener de mensagens para depuração
+    window.addEventListener("message", (event) => {
+      console.log("Mensagem recebida:", event);
+    });
+
+    // Remover listener ao desmontar o componente
+    return () => {
+      window.removeEventListener("message", (event) => {
+        console.log("Mensagem recebida:", event);
+      });
+    };
   }, []);
 
   const handleLogin = () => {
